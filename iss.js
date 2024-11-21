@@ -16,9 +16,14 @@ const fetchMyIP = function(callback) {
       callback(Error(`Status Code ${response.statusCode} when fetching IP: ${body}`), null);
       return;
     }
-
-    const ip = body.ip;
-    callback(null, ip);
+    
+    try {
+      const bodyObj = JSON.parse(body);
+      const ip = bodyObj.ip;
+      callback(null, ip);
+    } catch (parseError) {
+      callback(Error(`Failed to parse response body: ${parseError.message}`), null);
+    }
   });
 };
 
