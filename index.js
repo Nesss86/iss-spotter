@@ -1,16 +1,20 @@
-const { fetchMyIP, fetchCoordsByIP } = require('./iss');
+const needle = require('needle');
+const { fetchISSFlyOverTimes } = require('./iss');
 
-// Fetch the user's IP address
-fetchMyIP((error, ip) => {
+// Example coordinates (you can replace these with real coordinates later)
+const exampleCoords = { latitude: '49.27670', longitude: '-123.13000' };
+
+// Fetch the ISS flyover times using the coordinates
+fetchISSFlyOverTimes(exampleCoords, (error, flyOverTimes) => {
   if (error) {
     console.log("It didn't work!", error);
     return;
   }
 
-  console.log('It worked! Returned IP:', ip);
+  console.log('It worked! Returned ISS flyover times:', flyOverTimes);
+});
 
-  
-  // Use an invalid IP for testing
+// Example to test with an invalid IP
 /*
   const invalidIP = '42'; // This simulates an invalid IP address for testing
   
@@ -22,7 +26,9 @@ fetchMyIP((error, ip) => {
 
     console.log('It worked! Returned coordinates:', coords);
   });
-  */
-});
+*/
+
+
+
 
 
