@@ -26,20 +26,24 @@ const fetchISSFlyOverTimes = function(coords, callback) {
       return;
     }
 
+    let responseBody;
     try {
-      // If the body is already an object, we don't need to parse it
-      const responseBody = typeof body === 'object' ? body : JSON.parse(body);
-      const flyOverTimes = responseBody.response;
-
-      // Pass the flyover times to the callback
-      callback(null, flyOverTimes);
+      // Check if the response body is already a valid object, otherwise parse it
+      responseBody = typeof body === 'object' ? body : JSON.parse(body);
     } catch (parseError) {
       callback(Error(`Failed to parse response body: ${parseError.message}`), null);
+      return;
     }
+
+    // Ensure responseBody.response exists before using it
+    if (!responseBody.response) {
+      callback(Error('Invalid response from server'), null);
+      return;
+    }
+
+    // If everything is good, pass the fly over times to the callback
+    callback(null, responseBody.response);
   });
 };
 
-// Export the fetchISSFlyOverTimes function
 module.exports = { fetchISSFlyOverTimes };
-
-
